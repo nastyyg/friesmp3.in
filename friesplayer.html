@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fries Music Player</title>
+    <link rel="stylesheet" href="fmp3styles.css">
+</head>
+<body>
+    <div class="music-player">
+        <h2 id="track-title">Track Title</h2>
+        <audio id="audio" controls>
+            <source id="audio-source" src="song1.mp3" type="audio/mpeg">
+            <source id="audio-source" src="song.2.mp3" type="audio/mpeg">
+            <source id="audio-source" src="song.3.mp3" type="audio/mpeg">
+            <source id="audio-source" src="song.4.wav" type="audio/mpeg">
+            <source id="audio-source" src="song.5.wav" type="audio/mpeg">
+            <source id="audio-source" src="song.6.mp3" type="audio/mpeg">
+            <source id="audio-source" src="song.7.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+   s
+        <div class="controls">
+            <button id="prev">Prev</button>
+            <button id="play">Play</button>
+            <button id="next">Next</button>
+            <button id="download">Download</button>
+        </div>
+    </div>
+    <script>
+const audio = document.getElementById('audio');
+const playButton = document.getElementById('play');
+const prevButton = document.getElementById('prev');
+const nextButton = document.getElementById('next');
+const downloadButton = document.getElementById('download');
+const trackTitle = document.getElementById('track-title');
+
+let currentTrackIndex = 0;
+const tracks = [
+    { title: "Song 1", src: "song1.mp3" },
+    { title: "Song 2", src: "song2.mp3" },
+    { title: "Song 3", src: "song3.mp3" },
+    { title: "Song 4", src: "song4.mp3" },
+    { title: "Song 5", src: "song5.mp3" },
+    { title: "Song 6", src: "song6.mp3" },
+    { title: "Song 7", src: "song7.mp3" }
+];
+
+function loadTrack(index) {
+    audio.src = tracks[index].src;
+    trackTitle.textContent = tracks[index].title;
+    audio.load();
+}
+
+function playTrack() {
+    audio.play();
+    playButton.textContent = 'Pause';
+}
+
+function pauseTrack() {
+    audio.pause();
+    playButton.textContent = 'Play';
+}
+
+playButton.addEventListener('click', () => {
+    if (audio.paused) {
+        playTrack();
+    } else {
+        pauseTrack();
+    }
+});
+
+prevButton.addEventListener('click', () => {
+    currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+    loadTrack(currentTrackIndex);
+    playTrack();
+});
+
+nextButton.addEventListener('click', () => {
+    currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+    loadTrack(currentTrackIndex);
+    playTrack();
+});
+
+downloadButton.addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.href = tracks[currentTrackIndex].src;
+    link.download = tracks[currentTrackIndex].title;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
+
+// Load the first track initially
+loadTrack(currentTrackIndex);
+    </script>
+</body>
+</html>
